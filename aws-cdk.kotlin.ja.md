@@ -1,14 +1,14 @@
 # AWS CDK Kotlin コーディング基準
 
-本文書の目的は、justInCase のプロジェクトにおける AWS CDK を Kotlin で記述する際のコーディング基準である。justInCase の開発チームは少数であり、同時にジョブタイトルに囚われない動きを発揮したい場合が多くある。
+本文書は、justInCase のプロジェクトにおける AWS CDK を Kotlin で記述する際のコーディング基準である。
 
-したがって、インフラエンジニアのみならず、アプリケーションエンジニアでもある程度 CDK アプリ・スタックの関係性が把握できることを目指して基準を定めた。
+justInCase の開発チームは少数であり、同時にジョブタイトルに囚われない動きを発揮したい場合が多くある。したがって、インフラエンジニアのみならず、アプリケーションエンジニアでもある程度 CDK アプリ・スタックの関係性が把握できることを目指して基準を定めた。
 
 ## はじめに
 
 ### なぜ CDK by Kotlin か？
 
-インフラの構成をコードで管理するのであれば、CloudFormation, Terraform 等のツールでも構わない。また、TypeScript や Python などの言語で CDK を用いる選択肢もある。にもかかわらず CDK by Kotlin を採用するのは、以下の理由による。
+単にインフラの構成をコードで管理するのが目的なら、CloudFormation, Terraform 等のツールでも構わない。また、TypeScript や Python などの言語で CDK を用いる選択肢もある。にもかかわらず CDK by Kotlin を採用するのは、以下の理由による。
 
 - [CDK] AWS SDK との連携
   - CloudFormation/CDK の世界で完結しないリソースを扱う際に、AWS SDK を組み合わせて用いる。
@@ -16,7 +16,7 @@
 - [CDK] deploy と dryrun の両立。
   - CloudFormation の欠点として、deploy コマンドに dryrun オプションが存在しないことが挙げられる。
   - すなわち、冪等かつ差分を表示可能な CI パイプラインの構築が困難である。
-  - cdk synth, cdk diff cdk deploy コマンドはこれらの課題を解決する。
+  - cdk synth, cdk diff cdk deploy などのコマンドはこの課題を解決する。
 - [CDK by Kotlin] IntelliJ による型チェック
   - justInCase のバックエンドのアプリケーションでは Kotlin を採用している。
   - インフラのコードに Kotlin を採用することで、バックエンドのアプリケーションエンジニアが新たな環境構築をすることなくインフラのコードを読むことができる。
@@ -48,19 +48,19 @@ gradle や CDK の設定を配置する。
 
 [AWS CDK Kotlin DSL Example](https://github.com/justincase-jp/AWS-CDK-Kotlin-DSL/tree/master/example)に準じる。
 
-#### `src/main/kotlin/**`
+#### `/src/main/kotlin/**`
 
 `Main.kt` や `App`クラスのためのディレクトリ。
 
-#### `src/main/kotlin/**/stacks`
+#### `/src/main/kotlin/**/stacks`
 
 `Stack` クラスの拡張クラスのためのディレクトリ。
 
-#### `src/main/kotlin/**/resources`
+#### `/src/main/kotlin/**/resources`
 
 各種`Resource`クラスの拡張クラスのためのディレクトリ。
 
-#### `functions`
+#### `/functions`
 
 Lambda Function のソースコードのためのディレクトリ。
 
@@ -71,7 +71,7 @@ Lambda Function のソースコードのためのディレクトリ。
 CloudFormation のクラスを表す。
 
 - `software.amazon.awscdk.core.Stack` を継承すること。
-- id は `"${env}-${app}-{stackName}"` を基本とする。
+- id は `"${env}-${app}-{stack}"` を基本とする。
   - ハイフン・アンダーバー・スペースは、CloudFormation のテンプレートに変換される際に消えてしまう。
 - Tag を用いる。`props = StackProps { tags = mapOf("app" to app) }` のように引数から渡すことができる。
   - CDK ではタグが子の Construct に伝播するため、Stack に設定するだけで個別の Resource に設定せず済み便利。
@@ -89,15 +89,15 @@ CloudFormation のリソースを表す。例として、`lambda.Function` や `
 
 #### デバッグ
 
-- CDK CLI は MFA に対応していない。
-  - [aws-vault](https://github.com/99designs/aws-vault) を利用する。
+- [aws-vault](https://github.com/99designs/aws-vault) を利用する。
+  - CDK CLI が MFA に対応していないため。
 
 #### デプロイ
 
 - CI の workflow に `cdk synth` を組み込むこと。
   - `cdk diff` はプロパティレベルの差分を表示しないため
 
-## 参考文献
+## 参考ドキュメント
 
 - [Open CDK Guide](https://github.com/kevinslin/open-cdk)
 - [CloudFormation Style Guide by alexgibs](https://github.com/alexgibs/cfnstyle)
