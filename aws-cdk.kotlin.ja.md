@@ -4,7 +4,9 @@
 
 したがって、インフラエンジニアのみならず、アプリケーションエンジニアでもある程度 CDK アプリ・スタックの関係性が把握できることを目指して基準を定めた。
 
-## なぜ CDK by Kotlin か？
+## はじめに
+
+### なぜ CDK by Kotlin か？
 
 インフラの構成をコードで管理するのであれば、CloudFormation, Terraform 等のツールでも構わない。また、TypeScript や Python などの言語で CDK を用いる選択肢もある。にもかかわらず CDK by Kotlin を採用するのは、以下の理由による。
 
@@ -21,14 +23,14 @@
 
 CDK は上記以外にも様々な CloudFormation の課題を解決しているので、インフラの管理には CDK by Kotlin を用いることが望ましい。
 
-### CloudFormation/CDK(Kotlin 以外)を考慮すべきケース
+#### CloudFormation/CDK(Kotlin 以外)を考慮すべきケース
 
 - 外部の開発者と協力する場合
   - Kotlin を採用しているとは限らないため。
 - ベンダー等から提供された CloudFormation テンプレートがある場合
   - 基本的にそのまま使う前提で作成されているので、保守性を考慮しなくて良い。
 
-### なぜ AWS-CDK-Kotlin-DSL か？
+#### なぜ AWS-CDK-Kotlin-DSL か？
 
 Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https://mvnrepository.com/artifact/software.amazon.awscdk)が公式に提供されている。
 
@@ -36,7 +38,68 @@ Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https
 
 - WIP
 
+## コーディング基準
+
+### ディレクトリ構成
+
+#### `/`
+
+gradle や CDK の設定を配置する。
+
+[AWS CDK Kotlin DSL Example](https://github.com/justincase-jp/AWS-CDK-Kotlin-DSL/tree/master/example)に準じる。
+
+#### `src/main/kotlin/**`
+
+`Main.kt` や `App`クラスのためのディレクトリ。
+
+#### `src/main/kotlin/**/stacks`
+
+`Stack` クラスの拡張クラスのためのディレクトリ。
+
+#### `src/main/kotlin/**/resources`
+
+各種`Resource`クラスの拡張クラスのためのディレクトリ。
+
+#### `functions`
+
+Lambda Function のソースコードのためのディレクトリ。
+
+### クラス
+
+#### Stack
+
+CloudFormation のクラスを表す。
+
+- `software.amazon.awscdk.core.Stack` を継承すること。
+- id は `"${env}-${app}-{stackName}"` を基本とする。
+  - ハイフン・アンダーバー・スペースは、CloudFormation のテンプレートに変換される際に消えてしまう。
+- Tag を用いる。`props = StackProps { tags = mapOf("app" to app) }` のように引数から渡すことができる。
+  - CDK ではタグが子の Construct に伝播するため、Stack に設定するだけで個別の Resource に設定せず済み便利。
+
+#### Resource
+
+CloudFormation のリソースを表す。例として、`lambda.Function` や `s3.Bucket` など。
+
+- 必ずしも CloudFormation テンプレートのリソースと 1:1 である必要はない。
+- id はキャメルケースで簡潔に命名する。
+  - CDK により suffix が付与されるため、CloudFormation では長い ID になる。
+- 物理 ID は CloudFormation/CDK により生成されるため、コーディングしないこと。
+
+### 運用
+
+#### デバッグ
+
+- CDK CLI は MFA に対応していない。
+  - [aws-vault](https://github.com/99designs/aws-vault) を利用する。
+
+#### デプロイ
+
+- CI の workflow に `cdk synth` を組み込むこと。
+  - `cdk diff` はプロパティレベルの差分を表示しないため
+
 ## 参考文献
 
 - [Open CDK Guide](https://github.com/kevinslin/open-cdk)
--
+- [CloudFormation Style Guide by alexgibs](https://github.com/alexgibs/cfnstyle)
+- [Kotlin Coding Conventions](https://kotlinlang.org/docs/reference/coding-conventions.html)
+- [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
