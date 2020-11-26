@@ -2,7 +2,7 @@
 
 本文書は、justInCase のプロジェクトにおける AWS CDK を Kotlin で記述する際のコーディング基準である。
 
-justInCase の開発チームは少数であり、同時にジョブタイトルに囚われない動きを発揮したい場合が多くある。したがって、インフラエンジニアのみならず、アプリケーションエンジニアでもある程度 CDK アプリ・スタックの関係性が把握できることを目指して基準を定めた。
+justInCase の開発チームは少数であり、同時にジョブタイトルに囚われない動きを発揮したい場合が多くある。したがって、インフラエンジニアのみならず、アプリケーションエンジニアでもある程度 CDK App, Stack, Resource の関係性が把握できることを目指して基準を定めた。
 
 ## はじめに
 
@@ -44,7 +44,7 @@ Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https
 
 シングルプロジェクトかマルチプロジェクトのいずれかの構成になる。
 
-#### シングルプロジェクト（リポジトリ内に CDK アプリが一つだけ）の場合
+#### シングルプロジェクト（リポジトリ内に App が一つだけ）の場合
 
 [AWS CDK Kotlin DSL Example](https://github.com/justincase-jp/AWS-CDK-Kotlin-DSL/tree/master/example)に準じる。
 
@@ -64,7 +64,7 @@ Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https
 
 Lambda Function のソースコードのためのディレクトリ。
 
-#### マルチプロジェクト(リポジトリ内に複数の CDK アプリ)の場合
+#### マルチプロジェクト(リポジトリ内に複数の App)の場合
 
 - [App](https://docs.aws.amazon.com/ja_jp/cdk/latest/guide/apps.html)ごとにモジュールを作成する（例: `/ecs`, `/lambda`, `/dynamodb`）
 - `/buildSrc` モジュールを作成し、`/buildSrc/src/main/kotlin/versions.kt` でライブラリのバージョンを管理する。
