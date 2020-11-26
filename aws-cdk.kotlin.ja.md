@@ -42,27 +42,32 @@ Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https
 
 ### ディレクトリ構成
 
-#### `/`
+シングルプロジェクトかマルチプロジェクトのいずれかの構成になる。
 
-gradle や CDK の設定を配置する。
+#### シングルプロジェクト（リポジトリ内に CDK アプリが一つだけ）の場合
 
 [AWS CDK Kotlin DSL Example](https://github.com/justincase-jp/AWS-CDK-Kotlin-DSL/tree/master/example)に準じる。
 
-#### `/src/main/kotlin/**`
+##### `/src/main/kotlin/**`
 
 `Main.kt` や `App`クラスのためのディレクトリ。
 
-#### `/src/main/kotlin/**/stacks`
+##### `/src/main/kotlin/**/stacks`
 
 `Stack` クラスの拡張クラスのためのディレクトリ。
 
-#### `/src/main/kotlin/**/resources`
+##### `/src/main/kotlin/**/resources`
 
 各種`Resource`クラスの拡張クラスのためのディレクトリ。
 
-#### `/functions`
+##### `/functions`
 
 Lambda Function のソースコードのためのディレクトリ。
+
+#### マルチプロジェクト(リポジトリ内に複数の CDK アプリ)の場合
+
+- CDK アプリごとにモジュールを作成する（例: `/ecs`, `/lambda`, `/dynamodb`）
+- `/buildSrc` モジュールを作成し、`/buildSrc/src/main/kotlin/versions.kt` でライブラリのバージョンを管理する。
 
 ### クラス
 
