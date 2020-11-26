@@ -66,14 +66,14 @@ Lambda Function のソースコードのためのディレクトリ。
 
 #### マルチプロジェクト(リポジトリ内に複数の CDK アプリ)の場合
 
-- CDK アプリごとにモジュールを作成する（例: `/ecs`, `/lambda`, `/dynamodb`）
+- [App](https://docs.aws.amazon.com/ja_jp/cdk/latest/guide/apps.html)ごとにモジュールを作成する（例: `/ecs`, `/lambda`, `/dynamodb`）
 - `/buildSrc` モジュールを作成し、`/buildSrc/src/main/kotlin/versions.kt` でライブラリのバージョンを管理する。
 
 ### クラス
 
 #### Stack
 
-CloudFormation のクラスを表す。
+[CloudFormation のクラス](https://docs.aws.amazon.com/ja_jp/cdk/latest/guide/stacks.html)を表す。
 
 - `software.amazon.awscdk.core.Stack` を継承すること。
 - id は `"${env}-${app}-{stack}"` を基本とする。
@@ -83,7 +83,7 @@ CloudFormation のクラスを表す。
 
 #### Resource
 
-CloudFormation のリソースを表す。例として、`lambda.Function` や `s3.Bucket` など。
+[CloudFormation のリソース](https://docs.aws.amazon.com/ja_jp/cdk/latest/guide/resources.html)を表す。例として、`lambda.Function` や `s3.Bucket` など。
 
 - 必ずしも CloudFormation テンプレートのリソースと 1:1 である必要はない。
 - id はキャメルケースで簡潔に命名する。
