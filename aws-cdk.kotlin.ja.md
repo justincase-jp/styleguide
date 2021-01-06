@@ -30,14 +30,6 @@ CDK は上記以外にも様々な CloudFormation の課題を解決している
 - ベンダー等から提供された CloudFormation テンプレートがある場合
   - 基本的にそのまま使う前提で作成されているので、保守性を考慮しなくて良い。
 
-#### なぜ AWS-CDK-Kotlin-DSL か？
-
-Kotlin で CDK を利用するライブラリとしては、[AWS CDK Java](https://mvnrepository.com/artifact/software.amazon.awscdk)が公式に提供されている。
-
-[AWS CDK Kotlin DSL](https://github.com/justincase-jp/AWS-CDK-Kotlin-DSL)を使用する理由は以下の通り。
-
-- WIP
-
 ## コーディング基準
 
 ### ディレクトリ構成
