@@ -89,11 +89,6 @@ Lambda Function のソースコードのためのディレクトリ。
 - [aws-vault](https://github.com/99designs/aws-vault) を利用する。
   - CDK CLI が MFA に対応していないため。
 
-#### デプロイ
-
-- CI の workflow に `cdk synth` を組み込むこと。
-  - `cdk diff` はプロパティレベルの差分を表示しないため
-
 ## 参考ドキュメント
 
 - [Open CDK Guide](https://github.com/kevinslin/open-cdk)
